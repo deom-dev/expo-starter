@@ -96,10 +96,10 @@ export default function HomeScreen() {
 				})}
 				wallets={wallets}
 				connectButton={{
-					label: "Sign in to ✨ MyApp",
+					label: "Sign in to ✨ Passkey Test",
 				}}
 				connectModal={{
-					title: "✨ MyApp Login",
+					title: "✨ Passkey Test Login",
 				}}
 			/>
 			<ConnectButton
