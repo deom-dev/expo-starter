@@ -1,11 +1,11 @@
 {
   "expo": {
     "name": "passkey test",
-    "slug": "passkey-test",
+    "slug": "passkeytest",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "passkey-test",
+    "scheme": "passkeytest",
     "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./assets/images/splash.png",
