@@ -25,5 +25,5 @@ biome.json
 .yalc/
 yalc.lock
 android/
-ios/
+# ios/
 eas/
