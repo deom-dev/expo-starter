@@ -12,7 +12,7 @@ import {
 	ConnectEmbed,
 	lightTheme,
 } from "thirdweb/react";
-import { getUserEmail, inAppWallet } from "thirdweb/wallets/in-app";
+import { getUserEmail, hasStoredPasskey, inAppWallet } from "thirdweb/wallets/in-app";
 import { chain, client } from "@/constants/thirdweb";
 import { shortenAddress } from "thirdweb/utils";
 import { ThemedButton } from "@/components/ThemedButton";
@@ -102,6 +102,28 @@ export default function HomeScreen() {
 					title: "✨ MyApp Login",
 				}}
 			/>
+			<ConnectButton
+				client={client}
+				theme={lightTheme({
+					colors: {
+						primaryButtonBg: "#e0142f",
+						modalBg: "#e0142f",
+						borderColor: "#ed3a51",
+						accentButtonBg: "#b11025",
+						primaryText: "#fef5f6",
+						secondaryIconColor: "#e2dddd",
+						secondaryText: "#e2dddd",
+						secondaryButtonBg: "#ed3a51",
+					},
+				})}
+				wallets={wallets}
+				connectButton={{
+					label: "passkey connect",
+				}}
+				connectModal={{
+					title: "passkey connect",
+				}}
+			/>
 			<View style={{ height: 16 }} />
 			<View style={{ gap: 2 }}>
 				<ThemedText type="subtitle">{`<ConnectEmbed />`}</ThemedText>
@@ -172,12 +194,41 @@ const CustomConnectUI = () => {
 		</View>
 	) : (
 		<>
+			<ConnectWithPasskey />
 			<ConnectWithGoogle />
 			<ConnectWithMetaMask />
 		</>
 	);
 };
 
+const ConnectWithPasskey = () => {
+	const { connect, isConnecting } = useConnect();
+	return (
+		<ThemedButton
+			title="Connect with Passkey"
+			loading={isConnecting}
+			loadingTitle="Connecting..."
+			onPress={() => {
+				connect(async () => {
+					const wallet = inAppWallet({
+						smartAccount: {
+							chain,
+							sponsorGas: true,
+						},
+					});
+					const hasPasskey = await hasStoredPasskey(client);
+			 
+					await wallet.connect({
+						client,
+						strategy: "passkey",
+						type: hasPasskey ? "sign-in" : "sign-up",
+					});
+					return wallet;
+				});
+			}}
+		/>
+	);
+};
 const ConnectWithGoogle = () => {
 	const { connect, isConnecting } = useConnect();
 	return (
